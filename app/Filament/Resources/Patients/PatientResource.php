@@ -57,7 +57,9 @@ class PatientResource extends Resource
                     ->label('Fecha de Registro')
                     ->dateTime()
                     ->sortable(),
-            ]);
+            ])
+            ->defaultPaginationPageOption(10)
+            ->paginationPageOptions([10]);
     }
 
     public static function getRelations(): array

@@ -48,6 +48,17 @@ class RecordResource extends Resource
     {
         return $table
             ->columns([
+                \Filament\Tables\Columns\TextColumn::make('expediente_num')
+                    ->label('N° Expediente')
+                    ->getStateUsing(function ($record) {
+                        // Contamos cuántos expedientes tiene este paciente ANTES O IGUAL a este registro
+                        // para darle un número secuencial (1, 2, 3...)
+                        return 'Expediente ' . \App\Models\Record::where('patient_id', $record->patient_id)
+                            ->where('id', '<=', $record->id)
+                            ->count();
+                    })
+                    ->badge()
+                    ->color('info'),
                 \Filament\Tables\Columns\TextColumn::make('patient.name')
                     ->label('Paciente')
                     ->searchable()
@@ -56,7 +67,9 @@ class RecordResource extends Resource
                     ->label('Fecha de Cita')
                     ->date()
                     ->sortable(),
-            ]);
+            ])
+            ->defaultPaginationPageOption(10)
+            ->paginationPageOptions([10]);
     }
 
     public static function getRelations(): array

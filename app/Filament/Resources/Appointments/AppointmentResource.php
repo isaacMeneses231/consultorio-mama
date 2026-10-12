@@ -79,7 +79,9 @@ class AppointmentResource extends Resource
                         'cancelada' => 'danger',
                         default => 'gray',
                     }),
-            ]);
+            ])
+            ->defaultPaginationPageOption(10)
+            ->paginationPageOptions([10]);
     }
 
     public static function getRelations(): array

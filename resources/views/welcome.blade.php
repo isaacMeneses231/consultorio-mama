@@ -12,6 +12,8 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo-mama.png') }}?v=2">
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo-mama.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="min-h-screen bg-gray-900 text-gray-100 font-sans flex flex-col items-center pb-16">
 
@@ -24,24 +26,30 @@
     <div class="w-full pt-16"></div>
     @endif
     
-    <!-- Perfil -->
-    <div class="w-32 h-32 rounded-full bg-gray-800 shadow flex items-center justify-center">
-        <img src="{{ asset('images/perfil-mama.jpg') }}" alt="Dra. Sharon Gutiérrez" class="w-full h-full object-cover rounded-full shadow-lg border-4 border-amber-500/20">
-    </div>
-    
-    <h1 class="text-3xl font-bold text-white mt-6">Sharon Gutiérrez Avendaño</h1>
-    <h2 class="text-amber-500 font-medium tracking-wide mt-2">Psicóloga Clínica</h2>
-    
-    <div class="flex justify-center mt-6 mb-8">
-        <img src="{{ asset('images/logo-mama.png') }}" alt="Logo Psicología Clínica" class="h-24 w-auto drop-shadow-md rounded-xl">
-    </div>
+    <!-- Perfil / Header de Sharon -->
+    <header x-data="{ shown: false }" x-intersect="shown = true" x-intersect:leave="shown = false"
+            :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+            class="flex flex-col items-center transition-all duration-700 ease-out">
+        <div class="w-32 h-32 rounded-full bg-gray-800 shadow flex items-center justify-center">
+            <img src="{{ asset('images/perfil-mama.jpg') }}" alt="Dra. Sharon Gutiérrez" class="w-full h-full object-cover rounded-full shadow-lg border-4 border-amber-500/20">
+        </div>
+        
+        <h1 class="text-3xl font-bold text-white mt-6">Sharon Gutiérrez Avendaño</h1>
+        <h2 class="text-amber-500 font-medium tracking-wide mt-2">Psicóloga Clínica</h2>
+        
+        <div class="flex justify-center mt-6 mb-8">
+            <img src="{{ asset('images/logo-mama.png') }}" alt="Logo Psicología Clínica" class="h-24 w-auto drop-shadow-md rounded-xl">
+        </div>
 
-    <!-- Biografía -->
-    <p class="max-w-2xl text-center text-gray-400 mt-6 leading-relaxed px-4">
-        Mi propósito es brindar un espacio de confianza y respeto donde cada persona pueda expresar sus sentimientos, identificar sus fortalezas y avanzar hacia una mejor calidad de vida. Mi compromiso es acompañar a cada persona con sensibilidad humana, responsabilidad y respeto por su bienestar emocional.
-    </p>
+        <!-- Biografía -->
+        <p class="max-w-2xl text-center text-gray-400 mt-6 leading-relaxed px-4">
+            Mi propósito es brindar un espacio de confianza y respeto donde cada persona pueda expresar sus sentimientos, identificar sus fortalezas y avanzar hacia una mejor calidad de vida. Mi compromiso es acompañar a cada persona con sensibilidad humana, responsabilidad y respeto por su bienestar emocional.
+        </p>
+    </header>
 
-    <div class="w-full max-w-lg px-4">
+    <div x-data="{ shown: false }" x-intersect="shown = true" x-intersect:leave="shown = false"
+         :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+         class="w-full max-w-lg px-4 transition-all duration-700 ease-out delay-200">
         @if($paciente && $mis_citas)
             <div class="mt-12 mb-8">
                 <h3 class="text-xl text-amber-500 font-bold mb-4">Tus Citas Registradas</h3>
@@ -150,9 +158,15 @@
             <p class="text-amber-500 font-medium mt-2">Áreas de especialidad y servicios disponibles</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Contenedor del Grid Animado con Alpine.js -->
+        <div x-data="{ shown: false }" x-intersect="shown = true" x-intersect:leave="shown = false" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            
             <!-- Servicio 1 -->
-            <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/50 transition duration-300">
+            <div x-show="shown"
+                 x-transition:enter="transition ease-out duration-700 delay-100"
+                 x-transition:enter-start="opacity-0 translate-y-8"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/50 transition duration-300">
                 <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4">
                     <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 </div>
@@ -161,7 +175,11 @@
             </div>
 
             <!-- Servicio 2 -->
-            <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-[#3565fd]/50 transition duration-300">
+            <div x-show="shown"
+                 x-transition:enter="transition ease-out duration-700 delay-300"
+                 x-transition:enter-start="opacity-0 translate-y-8"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-[#3565fd]/50 transition duration-300">
                 <div class="w-12 h-12 bg-[#3565fd]/10 rounded-xl flex items-center justify-center mb-4">
                     <svg class="w-6 h-6 text-[#3565fd]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 </div>
@@ -170,7 +188,11 @@
             </div>
 
             <!-- Servicio 3 -->
-            <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-[#3565fd]/50 transition duration-300">
+            <div x-show="shown"
+                 x-transition:enter="transition ease-out duration-700 delay-500"
+                 x-transition:enter-start="opacity-0 translate-y-8"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-[#3565fd]/50 transition duration-300">
                 <div class="w-12 h-12 bg-[#3565fd]/10 rounded-xl flex items-center justify-center mb-4">
                     <svg class="w-6 h-6 text-[#3565fd]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                 </div>
@@ -179,7 +201,11 @@
             </div>
 
             <!-- Servicio 4 -->
-            <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/50 transition duration-300">
+            <div x-show="shown"
+                 x-transition:enter="transition ease-out duration-700 delay-700"
+                 x-transition:enter-start="opacity-0 translate-y-8"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 hover:border-amber-500/50 transition duration-300">
                 <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center mb-4">
                     <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                 </div>
@@ -215,5 +241,30 @@
         });
     </script>
     @endif
+
+    <!-- Botón WhatsApp Flotante -->
+    <a href="https://wa.me/50588396134?text={{ urlencode('Hola Dra. Sharon, quisiera hacer una consulta antes de agendar mi cita.') }}" target="_blank" class="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    </a>
+
+    <!-- FOOTER Y UBICACIÓN -->
+    <footer x-data="{ shown: false }" x-intersect="shown = true" x-intersect:leave="shown = false"
+            :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+            class="mt-20 border-t border-gray-800 bg-[#040116] pt-12 pb-8 transition-all duration-700 ease-out">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-white mb-4">Ubicación del Consultorio</h3>
+                <div class="inline-flex items-center justify-center p-4 bg-gray-800/50 rounded-2xl border border-gray-700/50">
+                    <svg class="w-6 h-6 text-[#3565fd] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <p class="text-gray-300 text-sm leading-relaxed text-left">
+                        <span class="font-bold text-amber-500 block mb-1">Dirección:</span>
+                        Barrio Raúl Tinoco<br>
+                        Del monumento 1 cuadra al norte 1/2 cuadra al oeste.
+                    </p>
+                </div>
+            </div>
+            <p class="text-gray-500 text-xs">© 2026 Clínica Psicológica Sharon Gutiérrez Avendaño. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 </body>
 </html>
